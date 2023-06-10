@@ -6,30 +6,10 @@
  * Author: sandao (zhengjunweimail@163.com)
  ******************************************************************************/
 
-package org.smartboot.http.server;
-
-import org.smartboot.http.common.enums.HeaderValueEnum;
-import org.smartboot.http.common.enums.HttpMethodEnum;
-import org.smartboot.http.common.enums.HttpStatus;
-import org.smartboot.http.common.exception.HttpException;
-import org.smartboot.http.common.utils.FixedLengthFrameDecoder;
-import org.smartboot.http.common.utils.SmartDecoder;
-import org.smartboot.http.common.utils.StringUtils;
-import org.smartboot.http.server.impl.Request;
-import org.smartboot.http.server.impl.RequestAttachment;
-
-import java.nio.ByteBuffer;
-
-/**
- * Http消息处理器
- *
- * @author 三刀
- * @version V1.0 , 2018/2/6
- */
-public abstract class HttpServerHandler implements ServerHandler<HttpRequest, HttpResponse> {
-
-    @Override
-    public boolean onBodyStream(ByteBuffer buffer, Request request) {
+public interface HttpServerHandler extends ServerHandler<HttpRequest, HttpResponse> {
+    void handle(HttpRequest request, HttpResponse response);
+    
+    default boolean onBodyStream(ByteBuffer buffer, Request request) {
         if (HttpMethodEnum.GET.getMethod().equals(request.getMethod())) {
             return true;
         }
@@ -63,5 +43,4 @@ public abstract class HttpServerHandler implements ServerHandler<HttpRequest, Ht
             return true;
         }
     }
-
 }
